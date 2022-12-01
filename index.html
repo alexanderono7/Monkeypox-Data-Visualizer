@@ -125,6 +125,13 @@ svg.call(d3.drag().on('drag', () => {
       d3.event.transform.k = 0.3
     }
   }))
+  
+// Function called when clicking on an individual country
+function selected() {
+  d3.select('.selected').classed('selected', false);
+  d3.select(this).classed('selected', true);
+  console.log("selected a country");
+}
 
 function ready(error, topo) {
     if (error) throw error;
@@ -141,6 +148,7 @@ function ready(error, topo) {
                 // Set the color
                 return colorScale(d.total);
             })
-            .attr("d", path);
+            .attr("d", path)
+            .on('click', selected);
 }
 </script>
