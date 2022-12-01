@@ -21,7 +21,7 @@
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
-<script src="2fc7bd0a8fe03f40@203.js"></script>
+<!-- <script src="2fc7bd0a8fe03f40@203.js"></script> -->
 <script>
 // Variable Definitions
 var initX; //track where mouse was clicked
@@ -149,6 +149,6 @@ function ready(error, topo) {
                 return colorScale(d.total);
             })
             .attr("d", path)
-            .on('click', selected);
+            .on('click', selected); // when clicking country, call `selected` function
 }
 </script>
