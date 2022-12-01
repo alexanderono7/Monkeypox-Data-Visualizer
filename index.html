@@ -23,10 +23,31 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
 <script src="2fc7bd0a8fe03f40@203.js"></script>
 <script>
+// Variable Definitions
+var initX; //track where mouse was clicked
+var s = 1; //track scale only rotate when s === 1
+var mouseClicked = false;
+
 // The svg
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height");
+    
+svg.attr("height", height)
+  //track where user clicked down
+  .on("mousedown", function() {
+     d3.event.preventDefault(); 
+     //only if scale === 1
+     if(s !== 1) return;
+       initX = d3.mouse(this)[0];
+       mouseClicked = true;
+       console.log("clicked");
+  })
+  .on("mouseup", function() {
+      if(s !== 1) return;
+      rotated = rotated + ((d3.mouse(this)[0] - initX) * 360 / (s * width));
+      mouseClicked = false;
+  });
 
 // Map and projection
 var path = d3.geoPath();
@@ -80,7 +101,7 @@ let globe = svg.append("circle")
 .attr("cy", height/2)
 .attr("r", initialScale)
     
-// Interacting w/ Globe
+// Versor dragging and zooming
 const sensitivity = 75
 svg.call(d3.drag().on('drag', () => {
   const rotate = projection.rotate()
