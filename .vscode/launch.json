@@ -4,7 +4,11 @@
             "type": "chrome",
             "name": "http://127.0.0.1:8080/",
             "request": "launch",
-            "url": "http://127.0.0.1:8080/"
+            "url": "http://127.0.0.1:8080/",
         }
-    ]
+    ],
+    // Helps mitigate `unexpected token 'export'` errors? (but doesn't stop all of them)
+    "transformIgnorePatterns": [
+        "/node_modules/(?!d3|d3-array|internmap|delaunator|robust-predicates)"
+    ],
 }
