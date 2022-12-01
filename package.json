@@ -1,11 +1,11 @@
 {
-  "name": "cf827b05f4715989",
-  "main": "cf827b05f4715989@199.js",
-  "version": "199.0.0",
-  "homepage": "https://observablehq.com/d/cf827b05f4715989",
+  "name": "@michael-keith/draggable-globe-in-d3",
+  "main": "2fc7bd0a8fe03f40@203.js",
+  "version": "203.0.0",
+  "homepage": "https://observablehq.com/@michael-keith/draggable-globe-in-d3",
   "author": {
-    "name": "Johnny Appleseed",
-    "url": "https://observablehq.com/@invalidthrowaway1"
+    "name": "Michael Keith",
+    "url": "https://observablehq.com/@michael-keith"
   },
   "type": "module",
   "peerDependencies": {
