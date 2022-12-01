@@ -18,6 +18,10 @@
   .selected {
     fill: rgb(0, 13, 255); 
   }
+  .hidden {
+    display: none;
+  }
+
   div.tooltip {
     color: #222; 
     background: #fff; 
@@ -91,7 +95,7 @@ g.append("text")
     .attr("class", "caption")
     .attr("x", 0)
     .attr("y", -6)
-    .text("Students");
+    .text("Number of Cases");
 var labels = ['0', '1-5', '6-10', '11-25', '26-100', '101-1000', '> 1000'];
 var legend = d3.legendColor()
     .labels(function (d) { return labels[d.i]; })
@@ -108,37 +112,37 @@ d3.queue()
     
     
 let globe = svg.append("circle")
-.attr("fill", "#EEE")
-.attr("stroke", "#000")
-.attr("stroke-width", "0.2")
-.attr("cx", width/2)
-.attr("cy", height/2)
-.attr("r", initialScale)
+    .attr("fill", "#EEE")
+    .attr("stroke", "#000")
+    .attr("stroke-width", "0.2")
+    .attr("cx", width/2)
+    .attr("cy", height/2)
+    .attr("r", initialScale)
     
 // Versor dragging and zooming
 const sensitivity = 75
-svg.call(d3.drag().on('drag', () => {
-  const rotate = projection.rotate()
-  const k = sensitivity / projection.scale()
-  projection.rotate([
-    rotate[0] + d3.event.dx * k,
-    rotate[1] - d3.event.dy * k
-  ])
-  path = d3.geoPath().projection(projection)
-  svg.selectAll("path").attr("d", path)
-}))
-    // Zooming functionality
-  .call(d3.zoom().on('zoom', () => {
-    if(d3.event.transform.k > 0.3) {
-      projection.scale(initialScale * d3.event.transform.k)
-      path = d3.geoPath().projection(projection)
-      svg.selectAll("path").attr("d", path)
-      globe.attr("r", projection.scale())
-    }
-    else {
-      d3.event.transform.k = 0.3
-    }
-  }))
+    svg.call(d3.drag().on('drag', () => {
+        const rotate = projection.rotate()
+        const k = sensitivity / projection.scale()
+        projection.rotate([
+            rotate[0] + d3.event.dx * k,
+            rotate[1] - d3.event.dy * k
+        ])
+        path = d3.geoPath().projection(projection)
+        svg.selectAll("path").attr("d", path)
+    }))
+        // Zooming functionality
+        .call(d3.zoom().on('zoom', () => {
+            if (d3.event.transform.k > 0.3) {
+                projection.scale(initialScale * d3.event.transform.k)
+                path = d3.geoPath().projection(projection)
+                svg.selectAll("path").attr("d", path)
+                globe.attr("r", projection.scale())
+            }
+            else {
+                d3.event.transform.k = 0.3
+            }
+        }))
   
 // Function called when clicking on an individual country
 function selected() {
@@ -147,23 +151,24 @@ function selected() {
   console.log("selected a country");
 }
 
-//for tooltip 
+// Tooltip stuff
 var offsetL = document.getElementById('map').offsetLeft+10;
 var offsetT = document.getElementById('map').offsetTop+10;
 
 function showTooltip(d) {
-  label = d.properties.name;
-  var mouse = d3.mouse(svg.node())
-    .map( function(d) { return parseInt(d); } );
-  tooltip.classed("hidden", false)
-    .attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
-    .html(label);
+    label = d.properties.name;
+    var mouse = d3.mouse(svg.node())
+        .map(function (d) { return parseInt(d); });
+    tooltip.classed("hidden", false)
+        .attr("style", "left:" + (mouse[0] + offsetL) + "px;top:" + (mouse[1] + offsetT) + "px")
+        .html(label);
 }
 
 var tooltip = d3.select("#map")
-.append("div")
-.attr("class", "tooltip hidden");
+    .append("div")
+    .attr("class", "tooltip hidden");
 
+// Finalizing & Execution.
 function ready(error, topo) {
     if (error) throw error;
 
@@ -184,8 +189,8 @@ function ready(error, topo) {
             .on('click', selected) // when clicking country, call `selected` function
             .on("mousemove", showTooltip)
             .on("mouseout",  function(d,i) {
-                tooltip.classed("hidden", true);
-             })
+               tooltip.classed("hidden", true);
+            })
             .attr("d", path);
 }
 </script>
