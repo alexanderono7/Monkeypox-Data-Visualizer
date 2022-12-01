@@ -1,0 +1,14 @@
+{
+  "name": "cf827b05f4715989",
+  "main": "cf827b05f4715989@199.js",
+  "version": "199.0.0",
+  "homepage": "https://observablehq.com/d/cf827b05f4715989",
+  "author": {
+    "name": "Johnny Appleseed",
+    "url": "https://observablehq.com/@invalidthrowaway1"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}
