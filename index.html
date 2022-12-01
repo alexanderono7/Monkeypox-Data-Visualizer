@@ -16,9 +16,20 @@
       font-weight: bold;
   }
   .selected {
-    fill: red;
+    fill: rgb(0, 13, 255); 
+  }
+  div.tooltip {
+    color: #222; 
+    background: #fff; 
+    border-radius: 3px; 
+    box-shadow: 0px 0px 2px 0px #a6a6a6; 
+    padding: .2em; 
+    text-shadow: #f5f5f5 0 1px 0;
+    opacity: 0.9; 
+    position: absolute;
   }
 </style>
+<div id="map"></div>
 <svg width="960" height="600"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
@@ -136,6 +147,23 @@ function selected() {
   console.log("selected a country");
 }
 
+//for tooltip 
+var offsetL = document.getElementById('map').offsetLeft+10;
+var offsetT = document.getElementById('map').offsetTop+10;
+
+function showTooltip(d) {
+  label = d.properties.name;
+  var mouse = d3.mouse(svg.node())
+    .map( function(d) { return parseInt(d); } );
+  tooltip.classed("hidden", false)
+    .attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
+    .html(label);
+}
+
+var tooltip = d3.select("#map")
+.append("div")
+.attr("class", "tooltip hidden");
+
 function ready(error, topo) {
     if (error) throw error;
 
@@ -151,7 +179,13 @@ function ready(error, topo) {
                 // Set the color
                 return colorScale(d.total);
             })
-            .attr("d", path)
-            .on('click', selected); // when clicking country, call `selected` function
+            .attr("name", function(d) {return d.properties.name;})
+            .attr("id", function(d) { return d.id;})
+            .on('click', selected) // when clicking country, call `selected` function
+            .on("mousemove", showTooltip)
+            .on("mouseout",  function(d,i) {
+                tooltip.classed("hidden", true);
+             })
+            .attr("d", path);
 }
 </script>
