@@ -5,6 +5,7 @@
     fill: none;
     stroke: rgb(0, 0, 0);
     stroke-linejoin: round;
+    stroke-width: 1px; 
   }
   .legendThreshold {
       font-size: 12px;
@@ -20,6 +21,12 @@
   }
   .hidden {
     display: none;
+  }
+  .globe{
+    fill: #EEE;
+    stroke: #000;
+    stroke-width: 0.2;
+    r: initialScale
   }
 
   div.tooltip {
@@ -114,7 +121,7 @@ d3.queue()
 let globe = svg.append("circle")
     .attr("fill", "#EEE")
     .attr("stroke", "#000")
-    .attr("stroke-width", "0.2")
+    .attr("stroke-width", "2.4")
     .attr("cx", width/2)
     .attr("cy", height/2)
     .attr("r", initialScale)
@@ -174,23 +181,30 @@ function ready(error, topo) {
 
     // Draw the map
     svg.append("g")
+        // Countries
         .attr("class", "countries")
         .selectAll("path")
         .data(topo.features)
         .enter().append("path")
-            .attr("fill", function (d){
-                // Pull data for this country
-                d.total = data.get(d.id) || 0;
-                // Set the color
-                return colorScale(d.total);
-            })
-            .attr("name", function(d) {return d.properties.name;})
-            .attr("id", function(d) { return d.id;})
-            .on('click', selected) // when clicking country, call `selected` function
-            .on("mousemove", showTooltip)
-            .on("mouseout",  function(d,i) {
-               tooltip.classed("hidden", true);
-            })
-            .attr("d", path);
+        .attr("fill", function (d) {
+            // Pull data for this country
+            d.total = data.get(d.id) || 0;
+            // Set the color
+            return colorScale(d.total);
+        })
+        .attr("name", function (d) { return d.properties.name; })
+        .attr("id", function (d) { return d.id; })
+        .on('click', selected) // when clicking country, call `selected` function
+        .on("mousemove", showTooltip)
+        .on("mouseout", function (d, i) {
+            tooltip.classed("hidden", true);
+        })
+        .attr("d", path);
+        
+        usa = d3.select('#USA');
+        canada = d3.select('#CAN');
+        
+    svg.append("g")
+
 }
 </script>
