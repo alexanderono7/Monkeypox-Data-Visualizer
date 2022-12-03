@@ -324,7 +324,9 @@
     function test(){
         console.log("activated");
         var color = d3.scaleOrdinal(d3.schemeCategory10);
-        return color(usa.color = "#FF0000");
+
+        usa.classed('selected', true);
+        console.log("selected a country");
     }
 
 </script>
