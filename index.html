@@ -323,14 +323,18 @@
     // Activates when button is pressed
     function test(){
         console.log("activated");
-        var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-        //usa.classed('selected', true);
-        //d3.select('#RUS').classed('selected', true);
-        //d3.select('#RUS').classed('fill', colorScale(999999));
-        //.attr("fill", "#000");
-        svg.selectAll("path").remove();
-    }
+        svg.selectAll("path")
+        .style("fill", function(d) {
+             var value = d.properties.value;
+
+             if (value) {
+                 return color(value);
+             } else {
+                 return "#ccc";
+             }
+        });
+       }
 
 </script>
 <div class="slidecontainer">
