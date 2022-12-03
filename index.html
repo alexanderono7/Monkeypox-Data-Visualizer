@@ -323,9 +323,23 @@
     // Activates when button is pressed
     function test(){
         console.log("activated");
+        d3.csv, "mooc-countries.csv", function (d) { data.set(d.code, +d.total);
+        d3.csv("test_transition.csv", function (d) { data.set(d.code, +d.total)});
 
-        svg.selectAll("path")
-        .style("fill", function(d) {
+        d3.select('#RUS').select('path').style("fill", function(d) {
+             var value = d.properties.value;
+
+             if (value) {
+                 return color(value);
+             } else {
+                 return "#ccc";
+             }
+        });
+        //svg.select('#RUS')
+        /*
+        svg.selectAll("path").filter(function(d) {
+            return d.properties.id == "RUS";
+        }).style("fill", function(d) {
              var value = d.properties.value;
 
              if (value) {
@@ -335,9 +349,22 @@
              }
         });
        }
+       */
+       d3.select('#USA');
+    }
+}
 
 </script>
 <div class="slidecontainer">
   <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
 </div>
+
+<script>
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+
+slider.oninput = function() {
+  console.log(this.value);
+}
+</script>
 <button onclick="test()">Click Me!</button> 
