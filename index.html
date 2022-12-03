@@ -326,17 +326,10 @@
         var color = d3.scaleOrdinal(d3.schemeCategory10);
 
         //usa.classed('selected', true);
-        d3.select('#RUS').classed('selected', true);
-        /*
-        .attr("fill", function (d) {
-            // Pull data for this country
-            d.total = data.get(d.id) || 0;
-            // Set the color
-            return colorScale(d.total);
-        })
-        */
-        
-        console.log("selected a country");
+        //d3.select('#RUS').classed('selected', true);
+        //d3.select('#RUS').classed('fill', colorScale(999999));
+        //.attr("fill", "#000");
+        svg.selectAll("path").remove();
     }
 
 </script>
