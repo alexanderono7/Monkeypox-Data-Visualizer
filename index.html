@@ -101,13 +101,16 @@
     // Variable Definitions
     var usa, canada; // countries which have states need to be tracked individually
     var states; // track states
+    var countries; // track countries
     var initX; //track where mouse was clicked
     var s = 1; //track scale only rotate when s === 1
     var mouseClicked = false;
     var queue = d3.queue();
+    var rotated = 90;
 
     // The svg
     var svg = d3.select("svg"),
+
         width = +svg.attr("width"),
         height = +svg.attr("height");
 
@@ -254,6 +257,7 @@
                 })
                 .attr("d", path);
 
+            countries = d3.selectAll('.country');
             usa = d3.select('#USA');
             canada = d3.select('#CAN');
 
@@ -276,12 +280,14 @@
 
             states = d3.selectAll('.state');
         })
+        console.log("ready() finished.")
     }
     
     // Called when zooming in/out
     function zoomed() {
         console.log("zoomed() called");
         // d3.event.transform.k = current level of zoom
+        s = d3.event.transform.k;
         if (d3.event.transform.k > 0.3) {
             projection.scale(initialScale * d3.event.transform.k)
             path = d3.geoPath().projection(projection)
@@ -317,13 +323,8 @@
     // Activates when button is pressed
     function test(){
         console.log("activated");
-
-        queue.abort();
-        // Load external data and boot
-        queue
-            .defer(d3.json, "http://enjalot.github.io/wwsd/data/world/world-110m.geojson")
-            .defer(d3.csv, "test_transition.csv", function (d) { data.set(d.code, +d.total); })
-            .await(ready);
+        var color = d3.scaleOrdinal(d3.schemeCategory10);
+        return color(usa.color = "#FF0000");
     }
 
 </script>
