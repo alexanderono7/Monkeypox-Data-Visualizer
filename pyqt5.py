@@ -2,7 +2,7 @@ import os.path
 import sys
 
 from PyQt5.QtCore import QUrl
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QGridLayout, QMainWindow, QTextEdit, QWidget
 from PyQt5.QtWebEngineCore import QWebEngineUrlRequestInterceptor
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 
@@ -24,7 +24,10 @@ def mainPyQt5():
     browser.load(QUrl.fromLocalFile(filename))
     browser.show()
     sys.exit(app.exec_())
-
+    
+    @pyqtSlot()
+    def on_click(self):
+        print('PyQt5 button click')
 
 if __name__ == "__main__":
     mainPyQt5()
