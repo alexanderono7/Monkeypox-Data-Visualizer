@@ -91,7 +91,6 @@
     }
 </style>
 <div id="map"></div>
-<svg width="960" height="600"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
@@ -106,12 +105,24 @@
     var mouseClicked = false;
     var queue = d3.queue();
     var rotated = 90;
+    var width = 960,
+        height = 600,
+        centered;
 
+
+    // Map and projection
+    let projection = d3.geoOrthographic()
+        .scale(250)
+        .center([0, 0])
+        .rotate([0, -30])
+        .translate([width / 2, height / 2]);
+    var path = d3.geoPath().projection(projection);
     // The svg
-    var svg = d3.select("svg"),
-        width = +svg.attr("width"),
-        height = +svg.attr("height");
-    svg.append("g");
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g");
 
     svg.attr("height", height)
         //track where user clicked down
@@ -128,14 +139,6 @@
             rotated = rotated + ((d3.mouse(this)[0] - initX) * 360 / (s * width));
             mouseClicked = false;
         });
-
-    // Map and projection
-    var path = d3.geoPath();
-    let projection = d3.geoOrthographic()
-        .scale(250)
-        .center([0, 0])
-        .rotate([0, -30])
-        .translate([width / 2, height / 2])
 
     var zoom = d3.zoom()
         .scaleExtent([1, 20])
@@ -158,6 +161,7 @@
 
 
     // Legend
+    /*
     var g = svg.append("g")
         .attr("class", "legendThreshold")
         .attr("transform", "translate(20,20)");
@@ -173,12 +177,15 @@
         .scale(colorScale);
     svg.select(".legendThreshold")
         .call(legend);
+    */
 
     // Load external data and boot
+    /*
     queue
         .defer(d3.json, "http://enjalot.github.io/wwsd/data/world/world-110m.geojson")
         .defer(d3.csv, "mooc-countries.csv", function (d) { data.set(d.code, +d.total); })
         .await(ready);
+        */
 
 
     let globe = svg.append("circle")
@@ -328,10 +335,11 @@
     var values = {};
     
     // wrapper function to enable switching map/legend content
-    function updateMap(){
+    function updateMap(filename){
+        console.log("updateMap() called");
         
         // function to read in data from csv file
-        d3.csv("test_transition.csv", function(error, data){
+        d3.csv(filename, function(error, data){
             
             // ForEach block here - not exactly sure what I'm going to do for that yet
             data.forEach(function (d){ 
@@ -349,7 +357,7 @@
                     .data(topojson.feature(topo, topo.objects.countries).features)
                     
                     // add new elements (is this necessary?)
-                    //appending.enter().append("path"); // this is the motherfucker that causes the lag!
+                    appending.enter().append("path"); // this is the motherfucker that causes the lag!
                     
                     // update existing elements
                     appending.style("fill", function(d) {
@@ -367,6 +375,8 @@
             
         });
     }
+    
+    updateMap('mooc-countries.csv');
 
 
 </script>
@@ -382,4 +392,4 @@ slider.oninput = function() {
   console.log(this.value);
 }
 </script>
-<button onclick="updateMap()">Click Me!</button> 
+<button onclick="updateMap('test_transition.csv')">Click Me!</button> 
