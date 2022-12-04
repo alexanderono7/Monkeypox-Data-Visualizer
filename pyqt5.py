@@ -3,7 +3,7 @@ import os.path
 import sys
 
 from PyQt5.QtCore import QUrl
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QSlider
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QSlider, QLabel
 from PyQt5.QtWebEngineCore import QWebEngineUrlRequestInterceptor
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import pyqtSlot, Qt, QRect
@@ -38,6 +38,8 @@ class Example(QWidget):
         vbox.addWidget(browser)
         # HTML STUFF ENDS HERE
 
+        self.sliderlabel = QLabel('This is label', self) # Date label for slider
+
         # Controller Objects
         button = QPushButton('PyQt5 button', self) # More for testing
         button.setToolTip('This is an example button')
@@ -62,11 +64,12 @@ class Example(QWidget):
         print('PyQt5 button click')
         browser.page().runJavaScript("updateMap(\'test_transition.csv\')")
 
-    def slidescale(self, value):
+    def slidescale(self, value) -> str:
         start_date = '05/01/2022'
         date_1 = datetime.datetime.strptime(start_date, "%m/%d/%Y")
         end_date = date_1 + datetime.timedelta(days=value)
-        print(end_date.strftime("%Y-%m-%d"))
+        self.sliderlabel.setText(end_date.strftime("%m-%d-%Y"))
+        return end_date.strftime("%Y-%m-%d")
 
 
   
