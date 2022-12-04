@@ -8,6 +8,8 @@ from PyQt5.QtWebEngineCore import QWebEngineUrlRequestInterceptor
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import pyqtSlot, Qt, QRect
 
+import sql_script as sql
+
 class Interceptor(QWebEngineUrlRequestInterceptor):
     def interceptRequest(self, info):
         info.setHttpHeader(b"Accept-Language", b"en-US,en;q=0.9,es;q=0.8,de;q=0.7")
@@ -28,7 +30,8 @@ class Example(QWidget):
         CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
         filename = os.path.join(CURRENT_DIR, "index.html")
         #app = QApplication(sys.argv)
-        browser = QWebEngineView()
+        self.browser = QWebEngineView()
+        browser = self.browser
 
         interceptor = Interceptor()
         browser.page().profile().setUrlRequestInterceptor(interceptor)
@@ -44,7 +47,7 @@ class Example(QWidget):
         button = QPushButton('PyQt5 button', self) # More for testing
         button.setToolTip('This is an example button')
         button.move(100,70)
-        button.clicked.connect(lambda: self.on_click(browser))
+        button.clicked.connect(lambda: self.on_click(browser)) # Sending browser as argument to button's activated function
 
         slider = QSlider(self)
         slider.setGeometry(QRect(190, 100, 600, 16))
@@ -69,6 +72,9 @@ class Example(QWidget):
         date_1 = datetime.datetime.strptime(start_date, "%m/%d/%Y")
         end_date = date_1 + datetime.timedelta(days=value)
         self.sliderlabel.setText(end_date.strftime("%m-%d-%Y"))
+        sql_date = end_date.strftime("%Y-%m-%d")
+        sql.query_nations(attr='cc',date=sql_date)
+        self.browser.page().runJavaScript("updateMap(\'buffer.csv\')")
         return end_date.strftime("%Y-%m-%d")
 
 

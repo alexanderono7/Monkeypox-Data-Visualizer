@@ -87,6 +87,8 @@ def populate_db():
 
                 global_insert = conditional_insert_query.format(prefix='G', relation='GLOBAL', keyattr='G_GLOBALKEY', key=glokey, cc_val=conf_cases, cd_val=conf_deaths, nc_val=new_cases, nd_val=new_deaths, foreignkey="", foreign="", cname="",cnameval="")
                 continent_insert = conditional_insert_query.format(prefix='C', relation='CONTINENT', keyattr='C_CONTINENTKEY', key=continentkey, cc_val=conf_cases, cd_val=conf_deaths, nc_val=new_cases, nd_val=new_deaths, foreignkey=", C_GLOBALKEY", foreign=", \'"+glokey+"\'",cname="C_NAME, ",cnameval="\'"+continent+"\', ")
+
+                # If date entry doesn't exist yet, create it. Otherwise do nothing.
                 date_insert = f'''
                 do $$
                 BEGIN
@@ -97,6 +99,7 @@ def populate_db():
                 end $$
                 '''
 
+                # Regular insertion query for nation.
                 nation_insert = f'''
                 INSERT INTO nation (N_NATIONKEY, N_NAME, N_CODE, N_CONFIRMEDCASES, N_CONFIRMEDDEATHS, N_NEWCASES, N_NEWDEATHS, N_CONTKEY, N_DATEKEY)
                 VALUES (\'{nationkey}\', \'{nationname}\', \'{alpha3}\', {conf_cases}, {conf_deaths}, {new_cases}, {new_deaths}, \'{continentkey}\', {date});
@@ -199,15 +202,22 @@ def query_nations(attr, date):
     nation_query = f'''
     select n_code, N_{column}
     from nation
-    where n_name = \'{nkey}\';
+    where n_datekey = \'{date}\'
     '''
-    cur.execute(update_query)
+    cur.execute(nation_query)
+    idk = 'code,total\n'
     for x in cur:
-        print(x)
+        idk += x[0] + ',' + str(x[1]) + "\n"
+    writeCsv(idk)
+    print(idk)
     cur.close()
     conn.close()
 
+def writeCsv(query_result):
+    with open('buffer.csv','w') as file:
+        file.write(query_result)
 subprocess.run('clear')
+query_nations('cc', '2022-11-20')
 # Presentation/Demo begins here:
 
 #clear_nation()
