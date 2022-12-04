@@ -176,6 +176,7 @@
     var offsetT = document.getElementById('map').offsetTop + 10;
 
     function showTooltip(d) {
+        console.log('trying to show tooltip')
         label = d.properties.name;
         var mouse = d3.mouse(svg.node())
             .map(function (d) { return parseInt(d); });
@@ -275,7 +276,11 @@
                         .style("stroke", "black")
                         .style("stroke-width", 1.3)
                         .attr("d", path)
-                        .on('click', selected); // when clicking country, call `selected` function
+                        .on('click', selected) // when clicking country, call `selected` function
+                        .on("mousemove", showTooltip)
+                        .on("mouseout", function (d, i) {
+                            tooltip.classed("hidden", true);
+                        })
             })
             
         })
