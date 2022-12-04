@@ -66,7 +66,7 @@ class Example(QWidget):
         start_date = '05/01/2022'
         date_1 = datetime.datetime.strptime(start_date, "%m/%d/%Y")
         end_date = date_1 + datetime.timedelta(days=value)
-        print(end_date)
+        print(end_date.strftime("%Y-%m-%d"))
 
 
   
