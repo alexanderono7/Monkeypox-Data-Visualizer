@@ -1,19 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-    .countries {
-        fill: none;
-        stroke: rgb(0, 0, 0);
-        stroke-linejoin: round;
-        stroke-width: 1px;
-    }
-
-    .boundary {
-        fill: #DEB887;
-        stroke: black;
-        stroke-width: 1px;
-    }
-
     .legendThreshold {
         font-size: 12px;
         font-family: sans-serif;
@@ -24,6 +11,11 @@
         text-anchor: start;
         font-weight: bold;
     }
+    
+    .countries {
+        fill: #fff;
+        stroke: #04AA6D;
+    }
 
     .selected {
         fill: rgb(0, 13, 255);
@@ -31,13 +23,6 @@
 
     .hidden {
         display: none;
-    }
-
-    .globe {
-        fill: #EEE;
-        stroke: #000;
-        stroke-width: 0.2;
-        r: initialScale
     }
 
     div.tooltip {
@@ -103,7 +88,6 @@
     var initX; //track where mouse was clicked
     var s = 1; //track scale only rotate when s === 1
     var mouseClicked = false;
-    var queue = d3.queue();
     var rotated = 90;
     var width = 960,
         height = 600,
@@ -127,12 +111,12 @@
     svg.attr("height", height)
         //track where user clicked down
         .on("mousedown", function () {
+            console.log("clicked");
             d3.event.preventDefault();
             //only if scale === 1
             if (s !== 1) return;
             initX = d3.mouse(this)[0];
             mouseClicked = true;
-            console.log("clicked");
         })
         .on("mouseup", function () {
             if (s !== 1) return;
@@ -144,49 +128,14 @@
         .scaleExtent([1, 20])
         .on("zoom", zoomed);
 
-    const initialScale = projection.scale()
-    var path = d3.geoPath()
-        .projection(projection);
+    const initialScale = projection.scale();
+ 
 
     // Data and color scale
-    var data = d3.map();
     var colorScheme = d3.schemeReds[6];
-    colorScheme.unshift("#eee")
-    var colorScale = d3.scaleThreshold()
-        .domain([1, 6, 11, 26, 101, 1001])
-        .range(colorScheme);
     var color = d3.scaleThreshold()
-        .domain([1, 6, 11, 26, 101, 1001])
-        .range(colorScheme);
-
-
-    // Legend
-    /*
-    var g = svg.append("g")
-        .attr("class", "legendThreshold")
-        .attr("transform", "translate(20,20)");
-    g.append("text")
-        .attr("class", "caption")
-        .attr("x", 0)
-        .attr("y", -6)
-        .text("Number of Cases");
-    var labels = ['0', '1-5', '6-10', '11-25', '26-100', '101-1000', '> 1000'];
-    var legend = d3.legendColor()
-        .labels(function (d) { return labels[d.i]; })
-        .shapePadding(4)
-        .scale(colorScale);
-    svg.select(".legendThreshold")
-        .call(legend);
-    */
-
-    // Load external data and boot
-    /*
-    queue
-        .defer(d3.json, "http://enjalot.github.io/wwsd/data/world/world-110m.geojson")
-        .defer(d3.csv, "mooc-countries.csv", function (d) { data.set(d.code, +d.total); })
-        .await(ready);
-        */
-
+    .domain([1, 6, 11, 26, 101, 1001])
+    .range(colorScheme);
 
     let globe = svg.append("circle")
         .attr("fill", "#EEE")
@@ -215,6 +164,7 @@
 
     // Function called when clicking on an individual country
     function selected() {
+        console.log("clicked on a country");
         d3.select('.selected').classed('selected', false);
         d3.select(this).classed('selected', true);
         console.log("selected a country");
@@ -237,61 +187,9 @@
         .append("div")
         .attr("class", "tooltip hidden");
 
-
-    // Finalizing & Execution. Get JSON data and draw map
-    // This is honest an abominable combination of two functions, but whatever.
-    function ready(error, topo) {
-        d3.json("combined2.json", function (error, world) {
-            if (error) return console.error(error);
-            // Draw the map
-            svg.append("g")
-                // Countries
-                .attr("class", "countries")
-                .selectAll("path")
-                .data(topo.features)
-                .enter().append("path")
-                .attr("fill", function (d) {
-                    // Pull data for this country
-                    d.total = data.get(d.id) || 0;
-                    // Set the color
-                    return colorScale(d.total);
-                })
-                .attr("name", function (d) { return d.properties.name; })
-                .attr("id", function (d) { return d.id; })
-                .on('click', selected) // when clicking country, call `selected` function
-                .on("mousemove", showTooltip)
-                .on("mouseout", function (d, i) {
-                    tooltip.classed("hidden", true);
-                })
-                .attr("d", path);
-
-            countries = d3.selectAll('.country');
-            usa = d3.select('#USA');
-            canada = d3.select('#CAN');
-
-            //states
-            svg.append("g")
-                .attr("class", "boundary state hidden")
-                .selectAll("boundary")
-                .data(topojson.feature(world, world.objects.states).features)
-                .enter().append("path")
-                .attr("name", function (d) { return d.properties.name; })
-                .attr("id", function (d) { return d.id; })
-                .on('click', selected)
-                .on("mousemove", showTooltip)
-                .on("mouseout", function (d, i) {
-                    tooltip.classed("hidden", true);
-                })
-                .attr("d", path);
-
-            states = d3.selectAll('.state');
-        })
-        console.log("ready() finished.")
-    }
-    
     // Called when zooming in/out
     function zoomed() {
-        console.log("zoomed() called");
+        //console.log("zoomed() called");
         // d3.event.transform.k = current level of zoom
         s = d3.event.transform.k;
         if (d3.event.transform.k > 0.3) {
@@ -309,6 +207,7 @@
             .style("stroke-width", 6 / s);
 
         //toggle state/USA visability
+        /*
         if (s > 3.5) {
             states
                 .classed('hidden', false);
@@ -324,6 +223,7 @@
             canada
                 .classed('hidden', false);
         }
+        */
     }
     
     // Activates when button is pressed
@@ -343,6 +243,8 @@
             
             // ForEach block here - not exactly sure what I'm going to do for that yet
             data.forEach(function (d){ 
+                //console.log(d.code);
+                //console.log(d.total);
                 values[d.code] = +d.total;
             });
             
@@ -354,26 +256,25 @@
                 // build the choropleth map
                 var appending = svg.selectAll("g")
                     .attr("class", "countries")
-                    .data(topojson.feature(topo, topo.objects.countries).features)
+                    .data(topojson.feature(topo, topo.objects.countries).features);
+                    
+                    //svg.selectAll("path").attr("d", path);
                     
                     // add new elements (is this necessary?)
-                    appending.enter().append("path"); // this is the motherfucker that causes the lag!
-                    
                     // update existing elements
-                    appending.style("fill", function(d) {
+                    appending.enter().append("path")
+                    .merge(appending)
+                    .style("fill", 
+                    function(d) {
                         return color(values[d.code]);
                     })
                     .style("stroke", "white")
                     .style("stroke-width", 0.3)
                     .attr("d", path)
-                    .on('click', selected) // when clicking country, call `selected` function
-                    .on("mousemove", showTooltip)
-                    .on("mouseout", function (d, i) {
-                        tooltip.classed("hidden", true);
-                    })
-            });
+                    .on('click', selected); // when clicking country, call `selected` function
+            })
             
-        });
+        })
     }
     
     updateMap('mooc-countries.csv');
