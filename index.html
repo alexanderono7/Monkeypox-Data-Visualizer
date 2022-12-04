@@ -13,7 +13,7 @@
     }
     
     .countries {
-        fill: #fff;
+        fill: rgb(125, 125, 125);
         stroke: #04AA6D;
     }
 
@@ -263,15 +263,15 @@
                     
                     // add new elements (is this necessary?)
                     // update existing elements
-                    console.log(values['RUS']);
                     appending.enter().append("path")
                         .merge(appending)
                         .attr("fill", function(d) { 
-                            console.log(d.code);
-                            return color(values[d.code]); 
+                            // if country doesn't have an entry in file, make it grey
+                            if(values[d.id]==undefined){
+                                return '#808080';
+                            }
+                            return color(values[d.id]); 
                         })
-
-                        .attr("fill",color(values['RUS']))
                         .style("stroke", "white")
                         .style("stroke-width", 0.3)
                         .attr("d", path)
@@ -282,8 +282,7 @@
     }
     
     updateMap('mooc-countries.csv');
-    d3.select('#RUS').style('fill', function(d) {return color(1)});
-    d3.select('#RUS').attr('fill', color(1));
+    d3.select('#RUS').attr('fill', 'red');
 
 
 </script>
