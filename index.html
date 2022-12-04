@@ -282,20 +282,8 @@
     }
     
     updateMap('mooc-countries.csv');
-    d3.select('#RUS').attr('fill', 'red');
 
 
 </script>
-<div class="slidecontainer">
-  <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-</div>
 
-<script>
-var slider = document.getElementById("myRange");
-var output = document.getElementById("demo");
-
-slider.oninput = function() {
-  console.log(this.value);
-}
-</script>
 <button onclick="updateMap('test_transition.csv')">Click Me!</button> 
