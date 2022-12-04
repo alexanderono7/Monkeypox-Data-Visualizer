@@ -121,28 +121,6 @@ def access_db():
     cur.close()
     conn.close()
 
-# insert dummy row into nation relation
-def insert_db():
-    conn = psycopg2.connect(dbname=database)
-    cur = conn.cursor()
-
-    nationkey = 13
-    nationname = "dummyname"
-    conf_cases = 4
-    conf_deaths = 7
-    new_cases = 4
-    new_deaths = 2
-    n_contkey = 4
-
-    insert_query = f'''
-    INSERT INTO nation (N_NATIONKEY, N_NAME, N_CONFIRMEDCASES, N_CONFIRMEDDEATHS, N_NEWCASES, N_NEWDEATHS, N_CONTKEY) 
-    VALUES ({nationkey}, \'{nationname}\', {conf_cases}, {conf_deaths}, {new_cases}, {new_deaths}, {n_contkey});
-    '''
-    cur.execute(insert_query)
-    conn.commit()
-    cur.close()
-    conn.close()
-
 # remove all rows from 'nation' relation
 def clear_nation():
     conn = psycopg2.connect(dbname=database)
@@ -206,8 +184,9 @@ subprocess.run('clear')
 
 #clear_nation()
 #insert_db()
-print_csv()
-populate_db()
+
+#print_csv()
+#populate_db()
 
 # Delete/Insertion query example
 #clear_nation() # delete query - clear all data from nation relation
