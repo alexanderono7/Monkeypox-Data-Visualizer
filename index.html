@@ -94,7 +94,6 @@
 <svg width="960" height="600"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <script>
@@ -110,9 +109,9 @@
 
     // The svg
     var svg = d3.select("svg"),
-
         width = +svg.attr("width"),
         height = +svg.attr("height");
+    svg.append("g");
 
     svg.attr("height", height)
         //track where user clicked down
@@ -153,6 +152,10 @@
     var colorScale = d3.scaleThreshold()
         .domain([1, 6, 11, 26, 101, 1001])
         .range(colorScheme);
+    var color = d3.scaleThreshold()
+        .domain([1, 6, 11, 26, 101, 1001])
+        .range(colorScheme);
+
 
     // Legend
     var g = svg.append("g")
@@ -227,8 +230,6 @@
         .append("div")
         .attr("class", "tooltip hidden");
 
-    //need this for correct panning
-    var g = svg.append("g");
 
     // Finalizing & Execution. Get JSON data and draw map
     // This is honest an abominable combination of two functions, but whatever.
@@ -261,10 +262,8 @@
             usa = d3.select('#USA');
             canada = d3.select('#CAN');
 
-            svg.append("g")
-
             //states
-            g.append("g")
+            svg.append("g")
                 .attr("class", "boundary state hidden")
                 .selectAll("boundary")
                 .data(topojson.feature(world, world.objects.states).features)
@@ -323,36 +322,52 @@
     // Activates when button is pressed
     function test(){
         console.log("activated");
-        d3.csv, "mooc-countries.csv", function (d) { data.set(d.code, +d.total);
-        d3.csv("test_transition.csv", function (d) { data.set(d.code, +d.total)});
-
-        d3.select('#RUS').select('path').style("fill", function(d) {
-             var value = d.properties.value;
-
-             if (value) {
-                 return color(value);
-             } else {
-                 return "#ccc";
-             }
-        });
-        //svg.select('#RUS')
-        /*
-        svg.selectAll("path").filter(function(d) {
-            return d.properties.id == "RUS";
-        }).style("fill", function(d) {
-             var value = d.properties.value;
-
-             if (value) {
-                 return color(value);
-             } else {
-                 return "#ccc";
-             }
-        });
-       }
-       */
-       d3.select('#USA');
     }
-}
+    
+    // dictionary w/ country prefixes as keys (subject to change).
+    var values = {};
+    
+    // wrapper function to enable switching map/legend content
+    function updateMap(){
+        
+        // function to read in data from csv file
+        d3.csv("test_transition.csv", function(error, data){
+            
+            // ForEach block here - not exactly sure what I'm going to do for that yet
+            data.forEach(function (d){ 
+                values[d.code] = +d.total;
+            });
+            
+            // function to read in data from json file - not sure what this is supposed to be?
+            d3.json("combined2.json", function (error, topo){ 
+
+                d3.select("g").selectAll("path").remove();
+                
+                // build the choropleth map
+                var appending = svg.selectAll("g")
+                    .attr("class", "countries")
+                    .data(topojson.feature(topo, topo.objects.countries).features)
+                    
+                    // add new elements (is this necessary?)
+                    //appending.enter().append("path"); // this is the motherfucker that causes the lag!
+                    
+                    // update existing elements
+                    appending.style("fill", function(d) {
+                        return color(values[d.code]);
+                    })
+                    .style("stroke", "white")
+                    .style("stroke-width", 0.3)
+                    .attr("d", path)
+                    .on('click', selected) // when clicking country, call `selected` function
+                    .on("mousemove", showTooltip)
+                    .on("mouseout", function (d, i) {
+                        tooltip.classed("hidden", true);
+                    })
+            });
+            
+        });
+    }
+
 
 </script>
 <div class="slidecontainer">
@@ -367,4 +382,4 @@ slider.oninput = function() {
   console.log(this.value);
 }
 </script>
-<button onclick="test()">Click Me!</button> 
+<button onclick="updateMap()">Click Me!</button> 
