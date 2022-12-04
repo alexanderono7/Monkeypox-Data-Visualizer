@@ -133,6 +133,7 @@
 
     // Data and color scale
     var colorScheme = d3.schemeReds[6];
+    colorScheme.unshift("#eee")
     var color = d3.scaleThreshold()
     .domain([1, 6, 11, 26, 101, 1001])
     .range(colorScheme);
@@ -262,22 +263,27 @@
                     
                     // add new elements (is this necessary?)
                     // update existing elements
+                    console.log(values['RUS']);
                     appending.enter().append("path")
-                    .merge(appending)
-                    .style("fill", 
-                    function(d) {
-                        return color(values[d.code]);
-                    })
-                    .style("stroke", "white")
-                    .style("stroke-width", 0.3)
-                    .attr("d", path)
-                    .on('click', selected); // when clicking country, call `selected` function
+                        .merge(appending)
+                        .attr("fill", function(d) { 
+                            console.log(d.code);
+                            return color(values[d.code]); 
+                        })
+
+                        .attr("fill",color(values['RUS']))
+                        .style("stroke", "white")
+                        .style("stroke-width", 0.3)
+                        .attr("d", path)
+                        .on('click', selected); // when clicking country, call `selected` function
             })
             
         })
     }
     
     updateMap('mooc-countries.csv');
+    d3.select('#RUS').style('fill', function(d) {return color(1)});
+    d3.select('#RUS').attr('fill', color(1));
 
 
 </script>
