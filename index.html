@@ -158,6 +158,7 @@
 
     // Data and color scale
     var colorScheme = d3.schemeReds[6];
+    //var colorScheme = d3.schemePurples[6]; // you can change colors with this
     colorScheme.unshift("#eee");
     var color = d3.scaleThreshold()
         .domain([1, 6, 11, 26, 101, 1001])
@@ -201,7 +202,6 @@
     var offsetT = document.getElementById('map').offsetTop + 10;
 
     function showTooltip(d) {
-        console.log('trying to show tooltip')
         label = d.properties.name;
         value = values[d.id];
         if(value == undefined){
@@ -211,7 +211,7 @@
             .map(function (d) { return parseInt(d); });
         tooltip.classed("hidden", false)
             .attr("style", "left:" + (mouse[0] + offsetL) + "px;top:" + (mouse[1] + offsetT) + "px")
-            .html(label + " : " + value);
+            .html(label + " : " + value); // show both country name and value in tooltip
     }
 
     var tooltip = d3.select("#map")
