@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-    .legendThreshold {
-        font-size: 12px;
-        font-family: sans-serif;
-    }
-
     .caption {
         fill: #000;
         text-anchor: start;
@@ -74,8 +69,38 @@
       background: #04AA6D; /* Green background */
       cursor: pointer; /* Cursor on hover */
     }
+
+    #legend{
+        width: 500px;
+        position: absolute;
+        left: 480px;
+        top: 425px;
+    }
+    
+    .legendTitle {
+        font-family: sans-serif;
+        font-size: 12px;
+        color: #666;
+        margin-left: -5px;
+    }
+
+    
+    li.key {
+        float: left;
+        border-top-width: 15px;
+        border-top-style: solid;
+        font-family: "Oxygen";
+        color: #666;
+        font-size: 16px;
+        width: 10%;
+        padding-left: 0;
+        padding-right: 0;
+        list-style:none;
+    }
+
 </style>
 <div id="map"></div>
+<div id="legend"><!-- Legend container --></div>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
@@ -133,10 +158,10 @@
 
     // Data and color scale
     var colorScheme = d3.schemeReds[6];
-    colorScheme.unshift("#eee")
+    colorScheme.unshift("#eee");
     var color = d3.scaleThreshold()
-    .domain([1, 6, 11, 26, 101, 1001])
-    .range(colorScheme);
+        .domain([1, 6, 11, 26, 101, 1001])
+        .range(colorScheme);
 
     let globe = svg.append("circle")
         .attr("fill", "#EEE")
@@ -242,6 +267,7 @@
         
         // function to read in data from csv file
         d3.csv(filename, function(error, data){
+            document.getElementById("legend").innerHTML="<span class = legendTitle>" + 'testing_title' + "</span>";
             
             // ForEach block here - not exactly sure what I'm going to do for that yet
             data.forEach(function (d){ 
@@ -280,7 +306,46 @@
                         .on("mousemove", showTooltip)
                         .on("mouseout", function (d, i) {
                             tooltip.classed("hidden", true);
-                        })
+                        });
+    
+                        /*
+                        // Legend
+                        var g = svg.append("g")
+                            .attr("class", "legendThreshold")
+                            .attr("transform", "translate(20,20)");
+                        g.append("text")
+                            .attr("class", "caption")
+                            .attr("x", 0)
+                            .attr("y", -6)
+                            .text("Number of Cases");
+                        var labels = ['0', '1-5', '6-10', '11-25', '26-100', '101-1000', '> 1000'];
+                        var legend = d3.legendColor()
+                            .labels(function (d) { return labels[d.i]; })
+                            .shapePadding(4)
+                            .scale(color);
+                        svg.select(".legendThreshold")
+                            .call(legend);
+                        */
+                       d3.select('#legend')
+                           .selectAll('ul')
+                           .remove();
+
+                       // build the map legend
+                       var legend = d3.select('#legend')
+                           .append('ul')
+                           .attr('class', 'list-inline');
+
+                       var keys = legend.selectAll('li.key')
+                           .data(color.range());
+
+                       var legend_items = ["Low", "", "", "", "High"];
+
+                       keys.enter().append('li')
+                           .attr('class', 'key')
+                           .style('border-top-color', String)
+                           .text(function (d, i) {
+                               return legend_items[i];
+                           });
             })
             
         })
