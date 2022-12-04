@@ -3,7 +3,8 @@ import os.path
 import sys
 
 from PyQt5.QtCore import QUrl
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QSlider, QLabel
+from PyQt5 import QtGui
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QSlider, QLabel, QRadioButton
 from PyQt5.QtWebEngineCore import QWebEngineUrlRequestInterceptor
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import pyqtSlot, Qt, QRect
@@ -55,11 +56,22 @@ class Example(QWidget):
         slider.setRange(0,212)
         slider.valueChanged.connect(self.slidescale)
 
+        # Radio Buttons
+        self.radioButton_male = QRadioButton(self)
+        self.radioButton_male.setGeometry(QRect(180, 120, 95, 20))
+
+        # adding signal and slot
+        self.radioButton_male.toggled.connect(self.maleselected)
+
         self.setLayout(vbox)
 
         self.setGeometry(300, 300, 1000, 1000)
         self.setWindowTitle('CSE412 - DB Final Project, Group #19')
         self.show()
+
+    def maleselected(self, selected):
+        if selected:
+            self.label.setText("You are male")
 
     @pyqtSlot()
     def on_click(self, browser):
