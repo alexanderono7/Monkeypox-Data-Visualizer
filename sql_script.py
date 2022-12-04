@@ -1,4 +1,6 @@
 from collections import defaultdict
+import pycountry_convert as pc
+import pycountry
 import psycopg2
 import subprocess
 import csv
@@ -6,8 +8,23 @@ import os
 
 header = ['location', 'iso_code', 'date', 'total_cases', 'total_deaths', 'new_cases', 'new_deaths', 'new_cases_smoothed', 'new_deaths_smoothed', 'new_cases_per_million', 'total_cases_per_million', 'new_cases_smoothed_per_million', 'new_deaths_per_million', 'total_deaths_per_million', 'new_deaths_smoothed_per_million']
 
+# Creating dictionary of alpha2 -> alpha3 country codes
+alpha_codes = dict()
+for country in list(pycountry.countries):
+    alpha_codes[country.alpha_2] = country.alpha_3
+
+# Given the alpha 2 ISO code of a country, return its corresponding alpha 3 ISO code
+def getAlpha3(alpha2:str) -> str:
+    return alpha_codes[alpha2]
+
+# Given the alpha 2 ISO code of a country, return its continent
+def country_to_continent(country_alpha2:str) -> str:
+    country_continent_code = pc.country_alpha2_to_continent_code(country_alpha2)
+    country_continent_name = pc.convert_continent_code_to_continent_name(country_continent_code)
+    return country_continent_name
+
 # Parse monkeypox data csv file
-def parse_csv():
+def print_csv():
     with open('owid-monkeypox-data.csv', newline='') as csvfile:
         monkey_reader = csv.reader(csvfile, delimiter=',', quotechar='|')
         for i,row in enumerate(monkey_reader):
@@ -138,7 +155,7 @@ subprocess.run('clear')
 
 #clear_nation()
 #insert_db()
-parse_csv()
+print_csv()
 
 # Delete/Insertion query example
 #clear_nation() # delete query - clear all data from nation relation
