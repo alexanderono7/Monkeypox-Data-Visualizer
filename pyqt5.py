@@ -2,10 +2,10 @@ import os.path
 import sys
 
 from PyQt5.QtCore import QUrl
-from PyQt5.QtWidgets import QApplication, QGridLayout, QMainWindow, QTextEdit, QWidget, QVBoxLayout, QPushButton
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QSlider
 from PyQt5.QtWebEngineCore import QWebEngineUrlRequestInterceptor
 from PyQt5.QtWebEngineWidgets import QWebEngineView
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, Qt, QRect
 
 class Interceptor(QWebEngineUrlRequestInterceptor):
     def interceptRequest(self, info):
@@ -38,14 +38,20 @@ class Example(QWidget):
         vbox.addWidget(browser)
         # HTML STUFF ENDS HERE
 
-        button = QPushButton('PyQt5 button', self)
+        # Controller Objects
+        button = QPushButton('PyQt5 button', self) # More for testing
         button.setToolTip('This is an example button')
         button.move(100,70)
         button.clicked.connect(lambda: self.on_click(browser))
 
+        slider = QSlider(self)
+        slider.setGeometry(QRect(190, 100, 160, 16))
+        slider.setOrientation(Qt.Horizontal)
+        slider.valueChanged.connect(self.slidescale)
+
         self.setLayout(vbox)
 
-        self.setGeometry(300, 300, 1000, 900)
+        self.setGeometry(300, 300, 1000, 1000)
         self.setWindowTitle('QWebEngineView')
         self.show()
 
@@ -54,6 +60,9 @@ class Example(QWidget):
         #brow.page().runJavaScript("updateMap(\'test_transition.csv\')")
         print('PyQt5 button click')
         browser.page().runJavaScript("updateMap(\'test_transition.csv\')")
+
+    def slidescale(self, value):
+        print(value)
 
 
   
