@@ -98,8 +98,8 @@ def populate_db():
                 '''
 
                 nation_insert = f'''
-                INSERT INTO nation (N_NATIONKEY, N_NAME, N_CODE, N_CONFIRMEDCASES, N_CONFIRMEDDEATHS, N_NEWCASES, N_NEWDEATHS, N_CONTKEY) 
-                VALUES (\'{nationkey}\', \'{nationname}\', \'{alpha3}\', {conf_cases}, {conf_deaths}, {new_cases}, {new_deaths}, \'{continentkey}\');
+                INSERT INTO nation (N_NATIONKEY, N_NAME, N_CODE, N_CONFIRMEDCASES, N_CONFIRMEDDEATHS, N_NEWCASES, N_NEWDEATHS, N_CONTKEY, N_DATEKEY)
+                VALUES (\'{nationkey}\', \'{nationname}\', \'{alpha3}\', {conf_cases}, {conf_deaths}, {new_cases}, {new_deaths}, \'{continentkey}\', {date});
                 '''
                 cur.execute(global_insert)
                 cur.execute(continent_insert)
@@ -170,6 +170,34 @@ def select_country_all(nkey):
     cur = conn.cursor()
     update_query = f'''
     select *
+    from nation
+    where n_name = \'{nkey}\';
+    '''
+    cur.execute(update_query)
+    for x in cur:
+        print(x)
+    cur.close()
+    conn.close()
+
+# probably going to be used the most frequently
+def query_nations(attr, date):
+    # attr should be either 'cc', 'cd', 'nc', or 'nd'
+    # date should be in YYYY-MM-DD format
+    column = "?"
+    if(attr=='cc'):
+        column = 'CONFIRMEDCASES'
+    elif(attr=='cd'):
+        column = 'CONFIRMEDDEATHS'
+    elif(attr=='nc'):
+        column = 'NEWCASES'
+    elif(attr=='nd'):
+        column = 'NEWDEATHS'
+
+    conn = psycopg2.connect(dbname=database)
+    cur = conn.cursor()
+
+    nation_query = f'''
+    select n_code, N_{column}
     from nation
     where n_name = \'{nkey}\';
     '''
