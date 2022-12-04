@@ -13,6 +13,7 @@ class Interceptor(QWebEngineUrlRequestInterceptor):
     
 
 class Example(QWidget):
+    
 
     def __init__(self):
         super().__init__()
@@ -40,7 +41,7 @@ class Example(QWidget):
         button = QPushButton('PyQt5 button', self)
         button.setToolTip('This is an example button')
         button.move(100,70)
-        button.clicked.connect(self.on_click)
+        button.clicked.connect(lambda: self.on_click(browser))
 
         self.setLayout(vbox)
 
@@ -49,8 +50,13 @@ class Example(QWidget):
         self.show()
 
     @pyqtSlot()
-    def on_click(self):
+    def on_click(self, browser):
+        #brow.page().runJavaScript("updateMap(\'test_transition.csv\')")
         print('PyQt5 button click')
+        browser.page().runJavaScript("updateMap(\'test_transition.csv\')")
+
+
+  
 
 def main():
 
