@@ -2,10 +2,10 @@ import os.path
 import sys
 
 from PyQt5.QtCore import QUrl
-from PyQt5.QtWidgets import QApplication, QGridLayout, QMainWindow, QTextEdit, QWidget, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QGridLayout, QMainWindow, QTextEdit, QWidget, QVBoxLayout, QPushButton
 from PyQt5.QtWebEngineCore import QWebEngineUrlRequestInterceptor
 from PyQt5.QtWebEngineWidgets import QWebEngineView
-
+from PyQt5.QtCore import pyqtSlot
 
 class Interceptor(QWebEngineUrlRequestInterceptor):
     def interceptRequest(self, info):
@@ -37,18 +37,20 @@ class Example(QWidget):
         vbox.addWidget(browser)
         # HTML STUFF ENDS HERE
 
+        button = QPushButton('PyQt5 button', self)
+        button.setToolTip('This is an example button')
+        button.move(100,70)
+        button.clicked.connect(self.on_click)
+
         self.setLayout(vbox)
 
-        self.setGeometry(300, 300, 350, 250)
+        self.setGeometry(300, 300, 1000, 900)
         self.setWindowTitle('QWebEngineView')
         self.show()
 
-    def loadPage(self):
-
-        with open('test.html', 'r') as f:
-
-            html = f.read()
-            self.webEngineView.setHtml(html)
+    @pyqtSlot()
+    def on_click(self):
+        print('PyQt5 button click')
 
 def main():
 
