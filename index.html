@@ -71,17 +71,17 @@
     }
 
     #legend{
-        width: 500px;
+        width: 400px;
         position: absolute;
-        left: 480px;
-        top: 425px;
+        left: 500px;
+        top: 600px;
     }
     
     .legendTitle {
-        font-family: sans-serif;
-        font-size: 12px;
+        font-family: Oxygen;
+        font-size: 20px;
         color: #666;
-        margin-left: -5px;
+        margin-left: 105px;
     }
 
     
@@ -203,11 +203,15 @@
     function showTooltip(d) {
         console.log('trying to show tooltip')
         label = d.properties.name;
+        value = values[d.id];
+        if(value == undefined){
+            value = 'N/A';
+        }
         var mouse = d3.mouse(svg.node())
             .map(function (d) { return parseInt(d); });
         tooltip.classed("hidden", false)
             .attr("style", "left:" + (mouse[0] + offsetL) + "px;top:" + (mouse[1] + offsetT) + "px")
-            .html(label);
+            .html(label + " : " + value);
     }
 
     var tooltip = d3.select("#map")
@@ -267,7 +271,8 @@
         
         // function to read in data from csv file
         d3.csv(filename, function(error, data){
-            document.getElementById("legend").innerHTML="<span class = legendTitle>" + 'testing_title' + "</span>";
+            var legend_title = "ponkey mox";
+            document.getElementById("legend").innerHTML="<span class = legendTitle>" + legend_title + "</span>";
             
             // ForEach block here - not exactly sure what I'm going to do for that yet
             data.forEach(function (d){ 
@@ -338,7 +343,7 @@
                        var keys = legend.selectAll('li.key')
                            .data(color.range());
 
-                       var legend_items = ["Low", "", "", "", "High"];
+                       var legend_items = ["Low", "", "", "", "", "", "High"];
 
                        keys.enter().append('li')
                            .attr('class', 'key')
