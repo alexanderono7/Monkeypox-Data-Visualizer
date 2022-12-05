@@ -4,6 +4,7 @@ import sys
 
 from PyQt5.QtCore import QUrl
 from PyQt5 import QtGui
+from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QSlider, QLabel, QRadioButton
 from PyQt5.QtWebEngineCore import QWebEngineUrlRequestInterceptor
 from PyQt5.QtWebEngineWidgets import QWebEngineView
@@ -44,7 +45,11 @@ class Example(QWidget):
         vbox.addWidget(browser)
         # HTML STUFF ENDS HERE
 
-        self.sliderlabel = QLabel('This is label', self) # Date label for slider
+        self.sliderlabel = QLabel('', self) # Date label for slider
+        
+        self.sliderlabel.setFont(QFont('Arial',16))
+        self.sliderlabel.move(190, 525)
+
 
         # Controller Objects
         button = QPushButton('PyQt5 button', self) # More for testing
@@ -53,7 +58,7 @@ class Example(QWidget):
         button.clicked.connect(lambda: self.on_click(browser)) # Sending browser as argument to button's activated function
 
         slider = QSlider(self)
-        slider.setGeometry(QRect(190, 100, 600, 16))
+        slider.setGeometry(QRect(190, 600, 550, 16))
         slider.setOrientation(Qt.Horizontal)
         slider.setRange(0,212)
         slider.valueChanged.connect(self.slidescale)
@@ -62,21 +67,25 @@ class Example(QWidget):
         
         
         self.radioButton_cc = QRadioButton(self)
-        self.radioButton_cc.setGeometry(QRect(180, 120, 95, 20))
+        self.radioButton_cc.setGeometry(QRect(200, 300, 95, 20))
         self.radioButton_cc.toggled.connect(self.cc_selected)
+        self.radioButton_cc.setText("Confirmed Cases")
         self.radioButton_cc.setChecked(True)
 
         self.radioButton_cd = QRadioButton(self)
         self.radioButton_cd.setGeometry(QRect(180, 120, 95, 20))
         self.radioButton_cd.toggled.connect(self.cd_selected)
+        self.radioButton_cd.setText("Confirmed Deaths")
 
         self.radioButton_nc = QRadioButton(self)
         self.radioButton_nc.setGeometry(QRect(180, 120, 95, 20))
         self.radioButton_nc.toggled.connect(self.nc_selected)
+        self.radioButton_nc.setText("New Cases")
 
         self.radioButton_nd = QRadioButton(self)
         self.radioButton_nd.setGeometry(QRect(180, 120, 95, 20))
         self.radioButton_nd.toggled.connect(self.nd_selected)
+        self.radioButton_nd.setText("New Deaths")
 
 
         self.setLayout(vbox)
@@ -89,19 +98,22 @@ class Example(QWidget):
         if selected:
             self.attr = 'cc'
             self.attrtext = 'Confirmed Cases'
-
+            self.browser.page().runJavaScript(f"setType(\'{self.attrtext}\')")
     def cd_selected(self, selected):
         if selected:
             self.attr = 'cd'
             self.attrtext = 'Confirmed Deaths'
+            self.browser.page().runJavaScript(f"setType(\'{self.attrtext}\')")
     def nc_selected(self, selected):
         if selected:
             self.attr = 'nc'
             self.attrtext = 'New Cases'
+            self.browser.page().runJavaScript(f"setType(\'{self.attrtext}\')")
     def nd_selected(self, selected):
         if selected:
             self.attr = 'nd'
             self.attrtext = 'New Deaths'
+            self.browser.page().runJavaScript(f"setType(\'{self.attrtext}\')")
 
 
 
@@ -111,11 +123,13 @@ class Example(QWidget):
         print('PyQt5 button click')
         browser.page().runJavaScript("updateMap(\'test_transition.csv\')")
 
+    # Change date and update globe when moving slider. Also query the DB
     def slidescale(self, value) -> str:
         start_date = '05/01/2022'
         date_1 = datetime.datetime.strptime(start_date, "%m/%d/%Y")
         end_date = date_1 + datetime.timedelta(days=value)
         self.sliderlabel.setText(end_date.strftime("%m-%d-%Y"))
+        self.sliderlabel.adjustSize()
         sql_date = end_date.strftime("%Y-%m-%d")
         sql.query_nations(attr='cc',date=sql_date)
         self.browser.page().runJavaScript("updateMap(\'buffer.csv\')")
