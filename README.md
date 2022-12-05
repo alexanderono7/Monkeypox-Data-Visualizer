@@ -1,9 +1,17 @@
-run with command in UNIX terminal:
+CSE412 - Databases Final Project
+Group #18
+12/4/2022
+Alexander Ono
 
-live-server
+MonkeyPox Global Data Visualizer
+
+To run the entire application:
+    python3 pyqt5.py
 
 Dependencies:
--pycountry-convert
-    
-    install with:
-    pip3 install pycountry-convert
+    pycountry-convert
+        install with:
+        pip3 install pycountry-convert
+
+To run the webpage component only, run with command in UNIX terminal (requires npm live-server):
+    live-server
