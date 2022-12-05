@@ -262,6 +262,34 @@
         console.log("activated");
     }
     
+    var legend_title = "";
+    function setType(text){
+        switch(text){
+            case 'Confirmed Cases':
+                colorScheme = d3.schemeReds[6];
+                break;
+            case 'Confirmed Deaths':
+                colorScheme = d3.schemePurples[6];
+                break;
+            case 'New Cases':
+                colorScheme = d3.schemeGreens[6];
+                break;
+            case 'New Deaths':
+                colorScheme = d3.schemeBlues[6];
+                break; 
+            default:
+                colorScheme = d3.schemeReds[6];
+                break;
+        }
+        colorScheme.unshift("#eee");
+        color = d3.scaleThreshold()
+            .domain([1, 6, 11, 26, 101, 1001])
+            .range(colorScheme);
+
+        legend_title = text
+        updateMap('mooc-countries.csv');
+    }
+    
     // dictionary w/ country prefixes as keys (subject to change).
     var values = {};
     
@@ -271,7 +299,6 @@
         
         // function to read in data from csv file
         d3.csv(filename, function(error, data){
-            var legend_title = "ponkey mox";
             document.getElementById("legend").innerHTML="<span class = legendTitle>" + legend_title + "</span>";
             
             // ForEach block here - not exactly sure what I'm going to do for that yet
@@ -361,4 +388,4 @@
 
 </script>
 
-<button onclick="updateMap('test_transition.csv')">Click Me!</button> 
+<button onclick="setType('Confirmed Deaths')">Click Me!</button> 
