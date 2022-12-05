@@ -161,7 +161,7 @@
     //var colorScheme = d3.schemePurples[6]; // you can change colors with this
     colorScheme.unshift("#eee");
     var color = d3.scaleThreshold()
-        .domain([1, 6, 11, 26, 101, 1001])
+        .domain([1, 10, 30, 300, 3000, 50000])
         .range(colorScheme);
 
     let globe = svg.append("circle")
@@ -283,25 +283,27 @@
         }
         colorScheme.unshift("#eee");
         color = d3.scaleThreshold()
-            .domain([1, 6, 11, 26, 101, 1001])
+            .domain([1, 10, 30, 300, 3000, 50000])
             .range(colorScheme);
 
         legend_title = text
-        updateMap('mooc-countries.csv');
+        updateMap('buffer.csv');
     }
     
     // dictionary w/ country prefixes as keys (subject to change).
     var values = {};
+    legend_title = "Confirmed Cases"
     
     // wrapper function to enable switching map/legend content
     function updateMap(filename){
         console.log("updateMap() called");
+        values = {};
         
         // function to read in data from csv file
         d3.csv(filename, function(error, data){
             document.getElementById("legend").innerHTML="<span class = legendTitle>" + legend_title + "</span>";
             
-            // ForEach block here - not exactly sure what I'm going to do for that yet
+            
             data.forEach(function (d){ 
                 //console.log(d.code);
                 //console.log(d.total);
@@ -387,5 +389,3 @@
 
 
 </script>
-
-<button onclick="setType('Confirmed Deaths')">Click Me!</button> 
