@@ -217,7 +217,7 @@ def writeCsv(query_result):
     with open('buffer.csv','w') as file:
         file.write(query_result)
 subprocess.run('clear')
-query_nations('cc', '2022-11-20')
+#query_nations('cc', '2022-11-20')
 # Presentation/Demo begins here:
 
 #clear_nation()

@@ -160,33 +160,29 @@
     var colorScheme1 = d3.schemeReds[6];
     colorScheme1.unshift("#eee");
     var color1 = d3.scaleThreshold()
-        .domain([1, 10, 30, 300, 3000, 50000])
+        .domain([1, 10, 100, 1000, 10000, 20001])
         .range(colorScheme1);
 
     var colorScheme2 = d3.schemePurples[6];
     colorScheme2.unshift("#eee");
     var color2 = d3.scaleThreshold()
-        .domain([1, 10, 30, 300, 3000, 50000])
+        .domain([1, 4, 7, 10, 13, 15])
         .range(colorScheme2);
     
     var colorScheme3 = d3.schemeGreens[6];
     colorScheme3.unshift("#eee");
     var color3 = d3.scaleThreshold()
-        .domain([1, 10, 30, 300, 3000, 50000])
+        .domain([1, 5, 10, 15, 150, 1500])
         .range(colorScheme3);
 
     var colorScheme4 = d3.schemeBlues[6];
     colorScheme4.unshift("#eee");
     var color4 = d3.scaleThreshold()
-        .domain([1, 10, 30, 300, 3000, 50000])
+        .domain([1, 2, 4, 6, 8, 10])
         .range(colorScheme4);
 
-    var colorScheme = d3.schemeReds[6];
-    //var colorScheme = d3.schemePurples[6]; // you can change colors with this
-    colorScheme.unshift("#eee");
-    var color = d3.scaleThreshold()
-        .domain([1, 10, 30, 300, 3000, 50000])
-        .range(colorScheme);
+   
+    var color = color1
 
     let globe = svg.append("circle")
         .attr("fill", "#EEE")

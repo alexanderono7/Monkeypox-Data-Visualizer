@@ -27,6 +27,7 @@ class Example(QWidget):
     def initUI(self):
         self.attr = 'cc'
         self.attrtext = 'Confirmed Cases'
+        self.date = '2022-05-01'
 
         vbox = QVBoxLayout(self)
 
@@ -102,21 +103,25 @@ class Example(QWidget):
             self.attr = 'cc'
             self.attrtext = 'Confirmed Cases'
             self.browser.page().runJavaScript(f"setType(\'{self.attrtext}\')")
+            sql.query_nations(attr=self.attr,date=self.date)
     def cd_selected(self, selected):
         if selected:
             self.attr = 'cd'
             self.attrtext = 'Confirmed Deaths'
             self.browser.page().runJavaScript(f"setType(\'{self.attrtext}\')")
+            sql.query_nations(attr=self.attr,date=self.date)
     def nc_selected(self, selected):
         if selected:
             self.attr = 'nc'
             self.attrtext = 'New Cases'
             self.browser.page().runJavaScript(f"setType(\'{self.attrtext}\')")
+            sql.query_nations(attr=self.attr,date=self.date)
     def nd_selected(self, selected):
         if selected:
             self.attr = 'nd'
             self.attrtext = 'New Deaths'
             self.browser.page().runJavaScript(f"setType(\'{self.attrtext}\')")
+            sql.query_nations(attr=self.attr,date=self.date)
 
 
 
@@ -134,6 +139,7 @@ class Example(QWidget):
         self.sliderlabel.setText(end_date.strftime("%m-%d-%Y"))
         self.sliderlabel.adjustSize()
         sql_date = end_date.strftime("%Y-%m-%d")
+        self.date = sql_date
         sql.query_nations(attr=self.attr,date=sql_date)
         self.browser.page().runJavaScript("updateMap(\'buffer.csv\')")
         return end_date.strftime("%Y-%m-%d")
