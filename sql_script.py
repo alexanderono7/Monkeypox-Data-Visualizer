@@ -5,8 +5,8 @@ import subprocess
 import psycopg2
 import hashlib
 import csv
-import os
 
+# Alexander Ono - 12/4/2022
 header = ['location', 'iso_code', 'date', 'total_cases', 'total_deaths', 'new_cases', 'new_deaths', 'new_cases_smoothed', 'new_deaths_smoothed', 'new_cases_per_million', 'total_cases_per_million', 'new_cases_smoothed_per_million', 'new_deaths_per_million', 'total_deaths_per_million', 'new_deaths_smoothed_per_million']
 database = 'finalproject'
 

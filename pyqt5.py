@@ -18,6 +18,7 @@ class Interceptor(QWebEngineUrlRequestInterceptor):
     
 #def getDate(x: int):
 
+# Alexander Ono - 12/4/2022
 class Example(QWidget):
     def __init__(self):
         super().__init__()
@@ -95,7 +96,7 @@ class Example(QWidget):
         self.setLayout(vbox)
 
         self.setGeometry(300, 300, 1000, 1000)
-        self.setWindowTitle('CSE412 - DB Final Project, Group #19')
+        self.setWindowTitle('CSE412 - DB Final Project, Group #18')
         self.show()
 
     def cc_selected(self, selected):
