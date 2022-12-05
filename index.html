@@ -73,15 +73,15 @@
     #legend{
         width: 400px;
         position: absolute;
-        left: 500px;
-        top: 600px;
+        left: 575px;
+        top: 660px;
     }
     
     .legendTitle {
         font-family: Oxygen;
         font-size: 20px;
         color: #666;
-        margin-left: 105px;
+        margin-left: 95px;
     }
 
     
@@ -157,6 +157,30 @@
  
 
     // Data and color scale
+    var colorScheme1 = d3.schemeReds[6];
+    colorScheme1.unshift("#eee");
+    var color1 = d3.scaleThreshold()
+        .domain([1, 10, 30, 300, 3000, 50000])
+        .range(colorScheme1);
+
+    var colorScheme2 = d3.schemePurples[6];
+    colorScheme2.unshift("#eee");
+    var color2 = d3.scaleThreshold()
+        .domain([1, 10, 30, 300, 3000, 50000])
+        .range(colorScheme2);
+    
+    var colorScheme3 = d3.schemeGreens[6];
+    colorScheme3.unshift("#eee");
+    var color3 = d3.scaleThreshold()
+        .domain([1, 10, 30, 300, 3000, 50000])
+        .range(colorScheme3);
+
+    var colorScheme4 = d3.schemeBlues[6];
+    colorScheme4.unshift("#eee");
+    var color4 = d3.scaleThreshold()
+        .domain([1, 10, 30, 300, 3000, 50000])
+        .range(colorScheme4);
+
     var colorScheme = d3.schemeReds[6];
     //var colorScheme = d3.schemePurples[6]; // you can change colors with this
     colorScheme.unshift("#eee");
@@ -266,25 +290,32 @@
     function setType(text){
         switch(text){
             case 'Confirmed Cases':
-                colorScheme = d3.schemeReds[6];
+                //colorScheme = d3.schemeReds[6];
+                color = color1;
                 break;
             case 'Confirmed Deaths':
-                colorScheme = d3.schemePurples[6];
+                //colorScheme = d3.schemePurples[6];
+                color = color2;
                 break;
             case 'New Cases':
-                colorScheme = d3.schemeGreens[6];
+                //colorScheme = d3.schemeGreens[6];
+                color = color3;
                 break;
             case 'New Deaths':
-                colorScheme = d3.schemeBlues[6];
+                //colorScheme = d3.schemeBlues[6];
+                color = color4;
                 break; 
             default:
-                colorScheme = d3.schemeReds[6];
+                //colorScheme = d3.schemeReds[6];
                 break;
         }
-        colorScheme.unshift("#eee");
+        
+        //colorScheme.unshift("#eee");
+        /*
+        
         color = d3.scaleThreshold()
             .domain([1, 10, 30, 300, 3000, 50000])
-            .range(colorScheme);
+            .range(colorScheme);*/
 
         legend_title = text
         updateMap('buffer.csv');

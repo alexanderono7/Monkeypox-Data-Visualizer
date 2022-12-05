@@ -48,42 +48,45 @@ class Example(QWidget):
         self.sliderlabel = QLabel('', self) # Date label for slider
         
         self.sliderlabel.setFont(QFont('Arial',16))
-        self.sliderlabel.move(190, 525)
+        self.sliderlabel.move(190, 545)
 
 
         # Controller Objects
+        '''
         button = QPushButton('PyQt5 button', self) # More for testing
         button.setToolTip('This is an example button')
         button.move(100,70)
         button.clicked.connect(lambda: self.on_click(browser)) # Sending browser as argument to button's activated function
+        '''
 
         slider = QSlider(self)
-        slider.setGeometry(QRect(190, 600, 550, 16))
+        slider.setGeometry(QRect(190, 600, 570, 16))
         slider.setOrientation(Qt.Horizontal)
         slider.setRange(0,212)
         slider.valueChanged.connect(self.slidescale)
 
         # Radio Buttons
         
-        
+        x = 100
+        y = 650
         self.radioButton_cc = QRadioButton(self)
-        self.radioButton_cc.setGeometry(QRect(200, 300, 95, 20))
+        self.radioButton_cc.setGeometry(QRect(100, 650, 200, 20))
         self.radioButton_cc.toggled.connect(self.cc_selected)
         self.radioButton_cc.setText("Confirmed Cases")
-        self.radioButton_cc.setChecked(True)
+        #self.radioButton_cc.setChecked(True)
 
         self.radioButton_cd = QRadioButton(self)
-        self.radioButton_cd.setGeometry(QRect(180, 120, 95, 20))
+        self.radioButton_cd.setGeometry(QRect(x, y+25, 200, 20))
         self.radioButton_cd.toggled.connect(self.cd_selected)
         self.radioButton_cd.setText("Confirmed Deaths")
 
         self.radioButton_nc = QRadioButton(self)
-        self.radioButton_nc.setGeometry(QRect(180, 120, 95, 20))
+        self.radioButton_nc.setGeometry(QRect(x, y+50, 200, 20))
         self.radioButton_nc.toggled.connect(self.nc_selected)
         self.radioButton_nc.setText("New Cases")
 
         self.radioButton_nd = QRadioButton(self)
-        self.radioButton_nd.setGeometry(QRect(180, 120, 95, 20))
+        self.radioButton_nd.setGeometry(QRect(x, y+75, 200, 20))
         self.radioButton_nd.toggled.connect(self.nd_selected)
         self.radioButton_nd.setText("New Deaths")
 
@@ -131,7 +134,7 @@ class Example(QWidget):
         self.sliderlabel.setText(end_date.strftime("%m-%d-%Y"))
         self.sliderlabel.adjustSize()
         sql_date = end_date.strftime("%Y-%m-%d")
-        sql.query_nations(attr='cc',date=sql_date)
+        sql.query_nations(attr=self.attr,date=sql_date)
         self.browser.page().runJavaScript("updateMap(\'buffer.csv\')")
         return end_date.strftime("%Y-%m-%d")
 
