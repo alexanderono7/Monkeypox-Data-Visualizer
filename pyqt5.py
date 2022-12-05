@@ -75,7 +75,7 @@ class Example(QWidget):
         self.radioButton_cc.setGeometry(QRect(100, 650, 200, 20))
         self.radioButton_cc.toggled.connect(self.cc_selected)
         self.radioButton_cc.setText("Confirmed Cases")
-        #self.radioButton_cc.setChecked(True)
+        self.radioButton_cc.setChecked(True)
 
         self.radioButton_cd = QRadioButton(self)
         self.radioButton_cd.setGeometry(QRect(x, y+25, 200, 20))
