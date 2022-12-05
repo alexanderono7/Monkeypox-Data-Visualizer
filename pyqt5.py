@@ -24,6 +24,8 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
+        self.attr = 'cc'
+        self.attrtext = 'Confirmed Cases'
 
         vbox = QVBoxLayout(self)
 
@@ -57,11 +59,25 @@ class Example(QWidget):
         slider.valueChanged.connect(self.slidescale)
 
         # Radio Buttons
-        self.radioButton_male = QRadioButton(self)
-        self.radioButton_male.setGeometry(QRect(180, 120, 95, 20))
+        
+        
+        self.radioButton_cc = QRadioButton(self)
+        self.radioButton_cc.setGeometry(QRect(180, 120, 95, 20))
+        self.radioButton_cc.toggled.connect(self.cc_selected)
+        self.radioButton_cc.setChecked(True)
 
-        # adding signal and slot
-        self.radioButton_male.toggled.connect(self.maleselected)
+        self.radioButton_cd = QRadioButton(self)
+        self.radioButton_cd.setGeometry(QRect(180, 120, 95, 20))
+        self.radioButton_cd.toggled.connect(self.cd_selected)
+
+        self.radioButton_nc = QRadioButton(self)
+        self.radioButton_nc.setGeometry(QRect(180, 120, 95, 20))
+        self.radioButton_nc.toggled.connect(self.nc_selected)
+
+        self.radioButton_nd = QRadioButton(self)
+        self.radioButton_nd.setGeometry(QRect(180, 120, 95, 20))
+        self.radioButton_nd.toggled.connect(self.nd_selected)
+
 
         self.setLayout(vbox)
 
@@ -69,9 +85,25 @@ class Example(QWidget):
         self.setWindowTitle('CSE412 - DB Final Project, Group #19')
         self.show()
 
-    def maleselected(self, selected):
+    def cc_selected(self, selected):
         if selected:
-            self.label.setText("You are male")
+            self.attr = 'cc'
+            self.attrtext = 'Confirmed Cases'
+
+    def cd_selected(self, selected):
+        if selected:
+            self.attr = 'cd'
+            self.attrtext = 'Confirmed Deaths'
+    def nc_selected(self, selected):
+        if selected:
+            self.attr = 'nc'
+            self.attrtext = 'New Cases'
+    def nd_selected(self, selected):
+        if selected:
+            self.attr = 'nd'
+            self.attrtext = 'New Deaths'
+
+
 
     @pyqtSlot()
     def on_click(self, browser):
