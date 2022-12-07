@@ -3,6 +3,8 @@ Group #18
 12/4/2022
 Alexander Ono
 
+https://youtu.be/Pp8j2Qmg0_I
+
 MonkeyPox Global Data Visualizer
 
 To run the entire application:
@@ -19,3 +21,4 @@ install with:
 
 To run the webpage component only, run with command in UNIX terminal (requires npm live-server):
     live-server
+
