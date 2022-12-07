@@ -12,8 +12,10 @@ To run the entire application:
 
 Dependencies:
     pycountry-convert
-        install with:
-        pip3 install pycountry-convert
+
+install with:
+    pip3 install pycountry-convert
+   
 
 To run the webpage component only, run with command in UNIX terminal (requires npm live-server):
     live-server
