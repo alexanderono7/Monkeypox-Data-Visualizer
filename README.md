@@ -7,6 +7,8 @@ MonkeyPox Global Data Visualizer
 
 To run the entire application:
     python3 pyqt5.py
+    
+(must have PostgreSQL running with database name as 'finalproject')
 
 Dependencies:
     pycountry-convert
