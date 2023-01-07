@@ -1,9 +1,20 @@
 # Monkeypox Global Data Visualizer
-Group #18
-12/4/2022
-Alexander Ono
+
+A PostreSQL application for visualizing MonkeyPox data on a three-dimensional global heatmap.
 
 [VIDEO DEMO](https://youtu.be/Pp8j2Qmg0_I)
+
+### UI Controls
+-Drag globe view around with click & hold
+
+-Zoom In/Out with scroll wheel
+
+-Adjust the slider to change the current date (and update the map correspondingly - and yes this actually queries the database and doesn't just use the csv file)
+
+-Move cursor over a country to view its current value of interest (you can't see my cursor in the screenshots but you can see the tooltip that pops up in the 2nd and 3rd pictures) 
+
+-Use the radio buttons to change the statistic type you're querying for
+
 
 To run the entire application:
     
