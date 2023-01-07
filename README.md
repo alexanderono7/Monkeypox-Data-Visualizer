@@ -3,10 +3,6 @@ Group #18
 12/4/2022
 Alexander Ono
 
-# Video Demo: 
-
-https://youtu.be/Pp8j2Qmg0_I
-
 To run the entire application:
     python3 pyqt5.py
     
@@ -18,6 +14,11 @@ To run the webpage component only, run with command in UNIX terminal (requires n
 Raw data was provided by OWID:
 
 https://github.com/owid/monkeypox
+
+# Video Demo: 
+
+https://youtu.be/Pp8j2Qmg0_I
+
 
 # Dependencies:
     pycountry-convert
