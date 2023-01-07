@@ -4,6 +4,11 @@ A PostreSQL application for visualizing MonkeyPox data on a three-dimensional gl
 
 [VIDEO DEMO](https://youtu.be/Pp8j2Qmg0_I)
 
+![image](https://user-images.githubusercontent.com/84484634/211172798-d014b173-13cc-4316-969a-2bfd4ab2cf5e.png)
+![image](https://user-images.githubusercontent.com/84484634/211172804-cb5ad70a-52ee-41bd-966c-15119c409857.png)
+
+
+
 ### UI Controls
 -Drag globe view around with click & hold
 
